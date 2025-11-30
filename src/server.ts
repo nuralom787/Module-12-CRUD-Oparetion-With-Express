@@ -52,10 +52,31 @@ app.get('/', (req: Request, res: Response) => {
     res.send('Hello Node-express!')
 });
 
-app.post("/", (req: Request, res: Response) => {
-    console.log(req.body);
-    res.json({ message: "ok", success: true }).status(201);
+
+app.post("/users", async (req: Request, res: Response) => {
+    const { name, email } = req.body;
+
+    try {
+        const result = await pool.query(`INSERT INTO users(name,email) VALUES($1, $2) RETURNING *`, [name, email]);
+        // console.log(result.rows[0]);
+
+        res.status(200).json({
+            success: true,
+            message: 'Data inserted Successfully!',
+            data: result.rows[0]
+        });
+    }
+    catch (err: any) {
+        res.status(500).json({
+            message: err.message,
+            success: false
+        })
+    }
+
+
+    res.status(201).json({ message: "ok", success: true });
 });
+
 
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`)
