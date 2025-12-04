@@ -30,6 +30,15 @@ app.use("/auth", authRouter);
 
 
 
+
+// * Default Apis.
+
+// ! Default get Route
+app.get('/', async (req: Request, res: Response) => {
+    res.json({ message: 'Hello Node-express!' })
+});
+
+
 // ! ----------------------- NOT FOUND ---------------------- ! //
 
 app.use((req: Request, res: Response) => {
@@ -38,15 +47,6 @@ app.use((req: Request, res: Response) => {
         message: "Route Not Found!",
         path: req.path
     })
-})
-
-
-
-// * Default Apis.
-
-// ! Default get Route
-app.get('/', (req: Request, res: Response) => {
-    res.send('Hello Node-express!')
 });
 
 export default app;
